@@ -14,12 +14,20 @@ class PicturesController < ApplicationController
     # find_picture
   end
 
-  def mew
+  def new
     # new_picture
   end
 
   def create
     # new_picture
+    @picture = Picture.new(picutre_params)
+    if @picture.save
+      flash[:notice] = "Your picture has been added"
+      redirect_to root_path
+    else
+      flash[:alert] = "Sorry, somehting went wrong :("
+      render :new
+    end
   end
 
   def destroy
@@ -32,6 +40,12 @@ class PicturesController < ApplicationController
 
   def find_picture
     @picture = Picture.find(params[:id])
+  end
+
+  private
+
+  def picutre_params
+    params.require(:picutre).permit(:title, :artist, :url)
   end
 
 end
